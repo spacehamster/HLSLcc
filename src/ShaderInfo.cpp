@@ -76,6 +76,27 @@ int ShaderInfo::GetInputSignatureFromRegister(const uint32_t ui32Register, const
     return 0;
 }
 
+/*
+This should really be GetInputSignatureFromSystemValue, but the parser does not assign the operand the correct SPECIAL_NAME,
+so to change this method to GetInputSignatureFromSystemValue, operand.eSpecialName needs to be correctly assigned
+*/
+int ShaderInfo::GetInputSignatureFromType(const uint32_t uiType, const InOutSignature** ppsOut, bool allowNull /* == true */) const
+{
+    size_t i;
+    const size_t ui32NumVars = psInputSignatures.size();
+    OPERAND_TYPE eType = (OPERAND_TYPE)uiType;
+    for (i = 0; i < ui32NumVars; ++i)
+    {
+        if (eType == OPERAND_TYPE::OPERAND_TYPE_INPUT_PRIMITIVEID && psInputSignatures[i].eSystemValueType == SPECIAL_NAME::NAME_PRIMITIVE_ID)
+        {
+            *ppsOut = &psInputSignatures[i];
+            return 1;
+        }
+    }
+    ASSERT(allowNull);
+    return 0;
+}
+
 int ShaderInfo::GetPatchConstantSignatureFromRegister(const uint32_t ui32Register, const uint32_t ui32Mask, const InOutSignature** ppsOut, bool allowNull /* == false */) const
 {
     size_t i;

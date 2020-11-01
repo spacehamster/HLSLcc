@@ -452,6 +452,7 @@ public:
     int GetInterfaceVarFromOffset(uint32_t ui32Offset, ShaderVar** ppsShaderVar) const;
 
     int GetInputSignatureFromRegister(const uint32_t ui32Register, const uint32_t ui32Mask, const InOutSignature** ppsOut, bool allowNull = false) const;
+    int GetInputSignatureFromType(const uint32_t uiType, const InOutSignature** ppsOut, bool allowNull = true) const;
     int GetPatchConstantSignatureFromRegister(const uint32_t ui32Register, const uint32_t ui32Mask, const InOutSignature** ppsOut, bool allowNull = false) const;
     int GetOutputSignatureFromRegister(const uint32_t ui32Register,
         const uint32_t ui32CompMask,

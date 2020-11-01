@@ -566,9 +566,15 @@ int Operand::GetNumInputElements(const HLSLCrossCompilerContext *psContext) cons
     }
 
     if (regSpace == 0)
-        psContext->psShader->sInfo.GetInputSignatureFromRegister(ui32RegisterNumber, GetAccessMask(), &psSig);
+    {
+        if (psContext->psShader->sInfo.GetInputSignatureFromType(eType, &psSig) == false) {
+            psContext->psShader->sInfo.GetInputSignatureFromRegister(ui32RegisterNumber, GetAccessMask(), &psSig);
+        }
+    }
     else
+    {
         psContext->psShader->sInfo.GetPatchConstantSignatureFromRegister(ui32RegisterNumber, GetAccessMask(), &psSig);
+    }
 
     ASSERT(psSig != NULL);
 

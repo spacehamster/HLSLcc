@@ -186,9 +186,15 @@ std::string HLSLCrossCompilerContext::GetDeclaredInputName(const Operand* psOper
     }
 
     if (regSpace == 0)
-        psShader->sInfo.GetInputSignatureFromRegister(psOperand->ui32RegisterNumber, psOperand->GetAccessMask(), &psIn, true);
+    {
+        if (psShader->sInfo.GetInputSignatureFromType(psOperand->eType, &psIn) == false) {
+            psShader->sInfo.GetInputSignatureFromRegister(psOperand->ui32RegisterNumber, psOperand->GetAccessMask(), &psIn, true);
+        }
+    }
     else
+    {
         psShader->sInfo.GetPatchConstantSignatureFromRegister(psOperand->ui32RegisterNumber, psOperand->GetAccessMask(), &psIn, true);
+    }
 
     if (psIn && piRebase)
         *piRebase = psIn->iRebase;
